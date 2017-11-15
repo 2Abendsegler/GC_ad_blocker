@@ -1,2 +1,2 @@
-# GC_ad_blocker
-Advertising blocker on geocaching.com
+# GC ad blocker
+Advertising blocker on www.geocaching.com
