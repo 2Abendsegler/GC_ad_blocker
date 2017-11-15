@@ -1,4 +1,4 @@
-// ==UserScript==
+// ==UserScript== 
 // @name           GC ad blocker
 // @namespace      2Abendsegler
 // @version        0.1
