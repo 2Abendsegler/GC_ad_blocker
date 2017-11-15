@@ -6,6 +6,7 @@
 // @include        http*://www.geocaching.com/*
 // @include        http*://labs.geocaching.com/*
 // @require        http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
+// @icon           https://raw.githubusercontent.com/2Abendsegler/GC_ad_blocker/master/images/gc_ad_blocker_logo.png
 // @copyright      2Abendsegler
 // @author         2Abendsegler
 // @license        GNU General Public License v3.0
