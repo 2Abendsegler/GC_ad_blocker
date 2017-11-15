@@ -10,7 +10,7 @@
 // @updateURL      https://github.com/2Abendsegler/GC_ad_blocker/raw/master/gc_ad_blocker.user.js
 // @copyright      2Abendsegler
 // @author         2Abendsegler
-// @license        GNU General Public License v3.0
+// @license        GNU General Public License v2.0
 // ==/UserScript==
 
 try {
