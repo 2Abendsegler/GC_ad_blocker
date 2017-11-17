@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           GC ad blocker
 // @namespace      2Abendsegler
-// @version        0.1
+// @version        0.2
 // @description    Advertising blocker on www.geocaching.com
 // @include        http*://www.geocaching.com/*
 // @include        http*://labs.geocaching.com/*
@@ -18,9 +18,14 @@ try {
     $('#div-message-center-ad').remove();
     $('#ctl00_ContentBody_divContentSide').children().remove();
     $('#ctl00_ContentBody_uxBanManWidget').children().remove();
-    $('#Content aside:not(#DashboardSidebar .advertisment) not(#leaderboard-ad)').children().remove();
-    $('#Content aside#DashboardSidebar .advertisment').children().remove();
+    // account/dashboard
+    $('#Content aside#DashboardSidebar .advertisment').remove();
+    // play/friendleague
     $('#Content aside #leaderboard-ad').remove();
+    // account/lists, account/drafts
+    $('#Content aside.sidebar-ad #lists-hub-ad').remove();
+    $('#Content aside.sidebar-ad #draft-hub-ad').remove();
+    $('#Content aside.sidebar-ad .contact').remove();
 } catch (e) {gc_error("error", e);}
 
 function gc_error(modul, err) {
