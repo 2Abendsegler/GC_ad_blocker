@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           GC ad blocker
 // @namespace      2Abendsegler
-// @version        0.4
+// @version        0.5
 // @description    Advertising blocker on www.geocaching.com
 // @include        http*://www.geocaching.com/*
 // @include        http*://labs.geocaching.com/*
@@ -26,6 +26,34 @@ try {
     $('#Content aside.sidebar-ad #lists-hub-ad').remove();
     $('#Content aside.sidebar-ad #draft-hub-ad').remove();
     $('#Content aside.sidebar-ad .contact').remove();
+    // plan/lists
+    function lists(waitCount) {
+        if ($('.structure aside.sidebar')[0]) $('.structure aside.sidebar').remove();
+        else {waitCount++; if (waitCount <= 100) setTimeout(function(){lists(waitCount);}, 100);}
+    }
+    function buildObserverBody() {
+        var observerBody = new MutationObserver(function(mutations) { mutations.forEach(function(mutation) { lists(0); }); });
+        var target = document.querySelector('body');
+        var config = { attributes: true, childList: true, characterData: true };
+        observerBody.observe(target, config);
+    }
+    function checkForBuildObserverBody(waitCount) {
+        if ($('body')[0]) buildObserverBody();
+        else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkForBuildObserverBody(waitCount);}, 100);}
+    }
+    function buildObserverButtons() {
+        var observerButtons = new MutationObserver(function(mutations) { mutations.forEach(function(mutation) { lists(0); }); });
+        var target = document.querySelector('.gc-button-group');
+        var config = { childList: true };
+        observerButtons.observe(target, config);
+    }
+    function checkForBuildObserverButtons(waitCount) {
+        if ($('.gc-button-group')[0]) buildObserverButtons();
+        else {waitCount++; if (waitCount <= 100) setTimeout(function(){checkForBuildObserverButtons(waitCount);}, 100);}
+    }
+    lists(0);
+    checkForBuildObserverButtons(0);
+    checkForBuildObserverBody(0);
 } catch (e) {gc_error("error", e);}
 
 function gc_error(modul, err) {
