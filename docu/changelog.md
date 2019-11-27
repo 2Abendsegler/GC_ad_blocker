@@ -6,7 +6,7 @@
 ## v0.5:
 <ul>
     <li>
-        New: Integrate latest pages: account/dashboard, play/friendleague, account/lists, account/drafts: [Issue <a href="https://github.com/2Abendsegler/GC_ad_blocker/issues/21">#21</a>]<br>
+        New: Integrate latest pages: plan/lists.<br>
     </li>
 </ul> 
 (27.11.2019)<br> 
