@@ -1,4 +1,4 @@
-<a href="#v05" title="GC ad blocker (27.11.2019)">v0.5</a> &nbsp;
+<a href="#v05" title="GC ad blocker (29.11.2019)">v0.5</a> &nbsp;
 <a href="#v02" title="GC ad blocker (17.11.2017)">v0.2</a> &nbsp;
 <a href="#v01" title="GC ad blocker (15.11.2017)">v0.1</a> &nbsp;
 
@@ -9,7 +9,7 @@
         New: Integrate latest pages: plan/lists.<br>
     </li>
 </ul> 
-(27.11.2019)<br> 
+(29.11.2019)<br> 
 <br>
 
 ---
