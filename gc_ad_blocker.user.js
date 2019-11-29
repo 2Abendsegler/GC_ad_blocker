@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           GC ad blocker
 // @namespace      2Abendsegler
-// @version        0.4
+// @version        0.5
 // @description    Advertising blocker on www.geocaching.com
 // @include        http*://www.geocaching.com/*
 // @include        http*://labs.geocaching.com/*
