@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           GC ad blocker
 // @namespace      2Abendsegler
-// @version        0.5
+// @version        0.4
 // @description    Advertising blocker on www.geocaching.com
 // @include        http*://www.geocaching.com/*
 // @include        http*://labs.geocaching.com/*
@@ -52,8 +52,8 @@ try {
     }
     function checkForBuildObserverBody(waitCount) {
         if ($('body')[0]) {
-            if ($('.gclh_buildObserverBody')[0]) return;
-            $('body').addClass('gclh_buildObserverBody');
+            if ($('.gcad_buildObserverBody')[0]) return;
+            $('body').addClass('gcad_buildObserverBody');
             buildObserverBody();
         } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBody(waitCount);}, 50);}
     }
