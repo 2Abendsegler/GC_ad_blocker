@@ -64,7 +64,7 @@ try {
                 checkForBuildObserverBody(0);
             });
         });
-        var target = document.querySelector('.desktop-nav-display');
+        var target = document.querySelector('.gc-button-group');
         var config = { attributes: true, childList: true, characterData: true };
         observerButtons.observe(target, config);
     }
