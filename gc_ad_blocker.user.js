@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           GC ad blocker
 // @namespace      2Abendsegler
-// @version        0.5
+// @version        0.6
 // @description    Advertising blocker on www.geocaching.com
 // @include        http*://www.geocaching.com/*
 // @include        http*://labs.geocaching.com/*
@@ -31,53 +31,43 @@ try {
     $('#Content aside.sidebar-ad .contact').remove();
 
     // plan/lists
-    function lists(waitCount) {
+    function processLists(waitCount) {
         if ($('aside.sidebar')[0]) {
             var style = document.createElement('style');
             style.innerHTML = 'aside.sidebar {width: 160px; height: 600px;}';
             style.type = 'text/css';
             $('head')[0].appendChild(style);
             $('aside.sidebar').children().remove();
-        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){lists(waitCount);}, 100);}
+        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){processLists(waitCount);}, 100);}
     }
-    function buildObserverBody() {
-        var observerBody = new MutationObserver(function(mutations) {
+    // Build mutation observer for target.
+    function buildObserverLists(target) {
+        var observerLists = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
-                lists(0);
+                processLists(0);
+                checkForBuildAllObserverLists();
             });
         });
-        var target = document.querySelector('body');
         var config = { attributes: true, childList: true, characterData: true };
-        observerBody.observe(target, config);
+        observerLists.observe($(target)[0], config);
     }
-    function checkForBuildObserverBody(waitCount) {
-        if ($('body')[0]) {
-            if ($('.gcad_buildObserverBody')[0]) return;
-            $('body').addClass('gcad_buildObserverBody');
-            buildObserverBody();
-        } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverBody(waitCount);}, 50);}
+    // Check if mutation observer for target can be build.
+    function checkForBuildObserverLists(waitCount, target, observerClass) {
+        if ($(target)[0]) {
+            if ($('.'+observerClass)[0]) return;
+            $(target).addClass(observerClass);
+            buildObserverLists(target);
+        } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverLists(waitCount, target, observerClass);}, 50);}
     }
-    function buildObserverButtons() {
-        var observerButtons = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                lists(0);
-                checkForBuildObserverBody(0);
-            });
-        });
-        var target = document.querySelector('.gc-button-group');
-        var config = { attributes: true, childList: true, characterData: true };
-        observerButtons.observe(target, config);
-    }
-    function checkForBuildObserverButtons(waitCount) {
-        if ($('.gc-button-group')[0]) buildObserverButtons();
-        else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverButtons(waitCount);}, 50);}
+    // Check if mutation observer can be build.
+    function checkForBuildAllObserverLists() {
+        checkForBuildObserverLists(0, '#app-root > div > div', 'gcad_observer_app-root');
+        checkForBuildObserverLists(0, '.structure', 'gcad_observer_structure');
     }
     if (document.location.href.match(/\/plan\/lists/)) {
-        lists(0);
-        checkForBuildObserverBody(0);
-        checkForBuildObserverButtons(0);
+        processLists(0);
+        checkForBuildAllObserverLists();
     }
-
 } catch (e) {gc_error("error", e);}
 
 function gc_error(modul, err) {
