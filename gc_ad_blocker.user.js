@@ -14,6 +14,9 @@
 // ==/UserScript==
 
 try {
+//xxxx1
+    setTimeout(function(){
+//xxxx
     $('#ctl00_uxBanManWidget').children().remove();
     $('#div-message-center-ad').remove();
     $('#ctl00_ContentBody_divContentSide').children().remove();
@@ -68,6 +71,9 @@ try {
         processLists(0);
         checkForBuildAllObserverLists();
     }
+//xxxx2
+    }, 5000);
+//xxxx
 } catch (e) {gc_error("error", e);}
 
 function gc_error(modul, err) {
