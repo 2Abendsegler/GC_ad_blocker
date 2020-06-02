@@ -17,13 +17,8 @@ try {
     $('#ctl00_uxBanManWidget').children().remove();
     $('#div-message-center-ad').remove();
     $('#ctl00_ContentBody_divContentSide').children().remove();
-//xxxx1
-    setTimeout(function(){
-//xxxx
-    $('#ctl00_ContentBody_uxBanManWidget').children().remove();
-//xxxx2
-    }, 5000);
-//xxxx
+    $('#ctl00_ContentBody_uxBanManWidget').css("visibility", "hidden");
+    $('#ctl00_ContentBody_uxBanManWidget').css("height", 0);
 
     // account/dashboard, play/souvenircampaign/hiddencreatures
     $('#Content aside .advertisement').remove();
