@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           GC ad blocker
 // @namespace      2Abendsegler
-// @version        0.7
+// @version        0.8
 // @description    Advertising blocker on www.geocaching.com
 // @include        http*://www.geocaching.com/*
 // @include        http*://labs.geocaching.com/*
@@ -23,7 +23,7 @@ try {
     $('#ctl00_ContentBody_uxBanManWidget').css("height", 0);
 
     // account/dashboard, play/souvenircampaign/hiddencreatures
-    $('#Content aside .advertisement').remove();
+    $('#Content .advertisement').remove();
 
     // play/friendleague
     $('#Content aside #leaderboard-ad').remove();
