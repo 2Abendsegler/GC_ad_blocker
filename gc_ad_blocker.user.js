@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           GC ad blocker
 // @namespace      2Abendsegler
-// @version        0.8
+// @version        0.9
 // @description    Advertising blocker on www.geocaching.com
 // @include        http*://www.geocaching.com/*
 // @include        http*://labs.geocaching.com/*
@@ -14,7 +14,9 @@
 // ==/UserScript==
 
 try {
-    $('#ctl00_uxBanManWidget').children().remove();
+    $('#ctl00_uxBanManWidget').css("visibility", "hidden");
+    $('#ctl00_uxBanManWidget').css("height", 0);
+
     $('#div-message-center-ad').remove();
     $('#ctl00_ContentBody_divContentSide').children().remove();
 
