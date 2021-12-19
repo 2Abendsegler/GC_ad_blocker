@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           GC ad blocker
 // @namespace      2Abendsegler
-// @version        0.9
+// @version        0.10
 // @description    Advertising blocker on www.geocaching.com
 // @include        http*://www.geocaching.com/*
 // @include        http*://labs.geocaching.com/*
@@ -39,39 +39,31 @@ try {
     function processLists(waitCount) {
         if ($('aside.sidebar')[0]) {
             var style = document.createElement('style');
-            style.innerHTML = 'aside.sidebar {width: 160px; height: 600px;}';
+            style.innerHTML = 'aside.sidebar {width: 160px; height: 600px;} .structure {margin-right: 0px; margin-left: 0px;}';
             style.type = 'text/css';
             $('head')[0].appendChild(style);
             $('aside.sidebar').children().remove();
         } else {waitCount++; if (waitCount <= 100) setTimeout(function(){processLists(waitCount);}, 100);}
     }
-    // Build mutation observer for target.
-    function buildObserverLists(target) {
+    // Build mutation observer for lists.
+    function buildObserverLists() {
         var observerLists = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 processLists(0);
-                checkForBuildAllObserverLists();
             });
         });
         var config = { attributes: true, childList: true, characterData: true };
-        observerLists.observe($(target)[0], config);
-    }
-    // Check if mutation observer for target can be build.
-    function checkForBuildObserverLists(waitCount, target, observerClass) {
-        if ($(target)[0]) {
-            if ($('.'+observerClass)[0]) return;
-            $(target).addClass(observerClass);
-            buildObserverLists(target);
-        } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverLists(waitCount, target, observerClass);}, 50);}
+        observerLists.observe($('#app-root')[0], config);
     }
     // Check if mutation observer can be build.
-    function checkForBuildAllObserverLists() {
-        checkForBuildObserverLists(0, '#app-root > div > div', 'gcad_observer_app-root');
-        checkForBuildObserverLists(0, '.structure', 'gcad_observer_structure');
+    function checkForBuildObserverLists(waitCount) {
+        if ($('#app-root')[0]) {
+            buildObserverLists();
+        } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverLists(waitCount);}, 50);}
     }
     if (document.location.href.match(/\/plan\/lists/)) {
         processLists(0);
-        checkForBuildAllObserverLists();
+        checkForBuildObserverLists(0);
     }
 } catch (e) {gc_error("error", e);}
 
