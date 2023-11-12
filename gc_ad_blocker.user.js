@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           GC ad blocker
 // @namespace      2Abendsegler
-// @version        0.10
+// @version        0.11
 // @description    Advertising blocker on www.geocaching.com
 // @include        http*://www.geocaching.com/*
 // @include        http*://labs.geocaching.com/*
@@ -34,6 +34,9 @@ try {
     $('#Content aside.sidebar-ad #lists-hub-ad').remove();
     $('#Content aside.sidebar-ad #draft-hub-ad').remove();
     $('#Content aside.sidebar-ad .contact').remove();
+
+    // Log View
+    $('#log-view-page-ad').remove();
 
     // plan/lists
     function processLists(waitCount) {
