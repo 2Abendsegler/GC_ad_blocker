@@ -35,6 +35,9 @@ try {
     $('#Content aside.sidebar-ad #draft-hub-ad').remove();
     $('#Content aside.sidebar-ad .contact').remove();
 
+    // Log View
+    $('#log-view-page-ad').remove();
+
     // plan/lists
     function processLists(waitCount) {
         if ($('aside.sidebar')[0]) {
