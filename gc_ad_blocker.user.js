@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           GC ad blocker
 // @namespace      2Abendsegler
-// @version        0.12
+// @version        0.13
 // @description    Advertising blocker on www.geocaching.com
 // @include        http*://www.geocaching.com/*
 // @include        http*://labs.geocaching.com/*
@@ -16,6 +16,10 @@
 try {
     $('#ctl00_uxBanManWidget').css("visibility", "hidden");
     $('#ctl00_uxBanManWidget').css("height", 0);
+    // notifications: empty space below the footer
+    if (document.location.href.match(/\.com\/notify\/default\.aspx/)) {
+        $('#ctl00_uxBanManWidget').css("display", "none");
+    }
 
     $('#div-message-center-ad').remove();
     $('#ctl00_ContentBody_divContentSide').children().remove();
@@ -38,9 +42,21 @@ try {
     // Log View
     function processLogView(waitCount) {
         $('#log-view-page-ad').remove();
-        waitCount++; if (waitCount <= 25) setTimeout(function(){processLogView(waitCount);}, 200);
+        waitCount++; if (waitCount <= 100) setTimeout(function(){processLogView(waitCount);}, 100);
     }
-    processLogView(0);
+    if (document.location.pathname.match(/\/live\/(?:log\/(?:gl|tl)|(?:geocache|trackable)\/(?:gc|tb))[a-z0-9]+/i)) {
+        let url = '';
+        const config = { childList: true, subtree: true };
+        const logObserver = new MutationObserver(function(_, observer) {
+            observer.disconnect();
+            if (url !== document.location.pathname) {
+                if (document.location.pathname.match(/\/live\/log\/(?:gl|tl)[a-z0-9]+/i)) processLogView(0);
+                url = document.location.pathname;
+            }
+            observer.observe(document.body, config);
+        });
+        logObserver.observe(document.body, config);
+    }
 
     // plan/lists
     function processLists(waitCount) {
