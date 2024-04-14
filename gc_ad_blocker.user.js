@@ -1,11 +1,9 @@
 // ==UserScript==
 // @name           GC ad blocker
 // @namespace      2Abendsegler
-// @version        0.13
+// @version        0.14
 // @description    Advertising blocker on www.geocaching.com
-// @include        http*://www.geocaching.com/*
-// @include        http*://labs.geocaching.com/*
-// @require        http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js
+// @match          https://www.geocaching.com/*
 // @icon           https://raw.githubusercontent.com/2Abendsegler/GC_ad_blocker/master/images/gc_ad_blocker_logo.png
 // @updateURL      https://github.com/2Abendsegler/GC_ad_blocker/raw/master/gc_ad_blocker.user.js
 // @copyright      2Abendsegler
@@ -13,84 +11,44 @@
 // @license        GNU General Public License v2.0
 // ==/UserScript==
 
-try {
-    $('#ctl00_uxBanManWidget').css("visibility", "hidden");
-    $('#ctl00_uxBanManWidget').css("height", 0);
-    // notifications: empty space below the footer
-    if (document.location.href.match(/\.com\/notify\/default\.aspx/)) {
-        $('#ctl00_uxBanManWidget').css("display", "none");
-    }
+var start = function() {
+    try {
+        if (document.querySelector('head') && !document.querySelector('#GCAB')) {
+            var css = '';
+            // about/glossary, adopt, email/default, find/default, my/collection, my/geocaches, my/inventory, my/logs, my/myfriends, my/owned,
+            // my/recentlyviewedcaches, my/souvenirs, my/statbar, my/statistics, my/subscription, my/travelbugs, my/userroutes, my/watchlist,
+            // notify/default, notify/edit, p/, pocket/default, seek/, seek/nearest, track/details, track/geocoin, track/search, track/travelbug
+            css += '#ctl00_uxBanManWidget {display: none !important; height: 0 !important;}';
+            // account/dashboard
+            css += '.advertisement {display: none !important;}';
+            // account/drafts
+            css += '.sidebar-ad {display: none !important;}';
+            // geocache/ (Cache Listing), my/default (Old Dashboard)
+            css += '#ctl00_ContentBody_uxBanManWidget {display: none !important; height: 0 !important;}';
+            // live/log (Log View Cache and Trackable)
+            css += '#log-view-page-ad {display: none !important; height: 0 !important;}';
+            // live/geocache (Log Form Geocache)
+            css += '#geocache-log-page-ad {display: none !important; height: 0 !important;}';
+            // live/trackable (Log Form Trackable)
+            css += '#trackable-log-page-ad {display: none !important; height: 0 !important;}';
+            // plan/lists (and all detail pages)
+            css += '#listhub-page-ad {display: none !important;}';
+            css += '#list-details-page-ad {display: none !important;}';
+            // play/leaderboard
+            css += '#leaderboard-ad {display: none !important;}';
 
-    $('#div-message-center-ad').remove();
-    $('#ctl00_ContentBody_divContentSide').children().remove();
-
-    // Cache Listing
-    $('#ctl00_ContentBody_uxBanManWidget').css("visibility", "hidden");
-    $('#ctl00_ContentBody_uxBanManWidget').css("height", 0);
-
-    // account/dashboard, play/souvenircampaign/hiddencreatures
-    $('#Content .advertisement').remove();
-
-    // play/friendleague
-    $('#Content aside #leaderboard-ad').remove();
-
-    // account/lists, account/drafts
-    $('#Content aside.sidebar-ad #lists-hub-ad').remove();
-    $('#Content aside.sidebar-ad #draft-hub-ad').remove();
-    $('#Content aside.sidebar-ad .contact').remove();
-
-    // Log View
-    function processLogView(waitCount) {
-        $('#log-view-page-ad').remove();
-        waitCount++; if (waitCount <= 100) setTimeout(function(){processLogView(waitCount);}, 100);
-    }
-    if (document.location.pathname.match(/\/live\/(?:log\/(?:gl|tl)|(?:geocache|trackable)\/(?:gc|tb))[a-z0-9]+/i)) {
-        let url = '';
-        const config = { childList: true, subtree: true };
-        const logObserver = new MutationObserver(function(_, observer) {
-            observer.disconnect();
-            if (url !== document.location.pathname) {
-                if (document.location.pathname.match(/\/live\/log\/(?:gl|tl)[a-z0-9]+/i)) processLogView(0);
-                url = document.location.pathname;
-            }
-            observer.observe(document.body, config);
-        });
-        logObserver.observe(document.body, config);
-    }
-
-    // plan/lists
-    function processLists(waitCount) {
-        if ($('aside.sidebar')[0]) {
             var style = document.createElement('style');
-            style.innerHTML = 'aside.sidebar {width: 160px; height: 600px;} .structure {margin-right: 0px; margin-left: 0px;}';
+            style.innerHTML = css;
             style.type = 'text/css';
-            $('head')[0].appendChild(style);
-            $('aside.sidebar').children().remove();
-        } else {waitCount++; if (waitCount <= 100) setTimeout(function(){processLists(waitCount);}, 100);}
-    }
-    // Build mutation observer for lists.
-    function buildObserverLists() {
-        var observerLists = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                processLists(0);
-            });
-        });
-        var config = { attributes: true, childList: true, characterData: true };
-        observerLists.observe($('#app-root')[0], config);
-    }
-    // Check if mutation observer can be build.
-    function checkForBuildObserverLists(waitCount) {
-        if ($('#app-root')[0]) {
-            buildObserverLists();
-        } else {waitCount++; if (waitCount <= 200) setTimeout(function(){checkForBuildObserverLists(waitCount);}, 50);}
-    }
-    if (document.location.href.match(/\/plan\/lists/)) {
-        processLists(0);
-        checkForBuildObserverLists(0);
-    }
-} catch (e) {gc_error("error", e);}
+            style.id = 'GCAB';
+            document.getElementsByTagName('head')[0].appendChild(style);
+        }
+    } catch (e) {gc_error("error", e);}
+}
 
 function gc_error(modul, err) {
     var txt = "ERROR - " + modul + " - " + document.location.href + ": " + err.message + "\nStacktrace:\n" + err.stack + (err.stacktrace ? ("\n" + err.stacktrace) : "");
     if (typeof(console) != "undefined") console.error(txt);
 }
+
+start(this);
